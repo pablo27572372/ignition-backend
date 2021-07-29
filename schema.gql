@@ -1,0 +1,198 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Comment {
+  """Comment ID"""
+  _id: String!
+
+  """Task ID"""
+  taskId: String!
+
+  """Comment Parent ID"""
+  parentId: String
+
+  """Comment Text"""
+  text: String!
+  comments: [Comment!]!
+
+  """Comment Created"""
+  created: DateTime
+
+  """Comment Updated"""
+  updated: DateTime
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Task {
+  """Task ID"""
+  _id: String!
+
+  """User ID"""
+  userId: String
+
+  """Task Parent"""
+  parentId: String
+
+  """Task Name"""
+  name: String!
+
+  """Task Status"""
+  status: TaskStatus!
+  subTasks: [Task!]!
+  comments: [Comment!]!
+
+  """Task Created"""
+  created: DateTime
+
+  """Task Updated"""
+  updated: DateTime
+}
+
+enum TaskStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  DONE
+}
+
+type User {
+  """User ID"""
+  _id: String
+
+  """User Name"""
+  username: String!
+
+  """User Email"""
+  email: String!
+
+  """User Password"""
+  password: String!
+  tasks: [Task!]!
+}
+
+type LoginResponse {
+  """Access Token"""
+  accessToken: String!
+}
+
+type Query {
+  tasks(sort: SortTaskInput, filter: FilterTaskInput): [Task!]!
+  task(id: String!): Task!
+  comments: [Comment!]!
+  comment(id: String!): Comment!
+  users: [User!]!
+  user(id: String!): User!
+  whoAmI: User!
+}
+
+input SortTaskInput {
+  """Task Created"""
+  created: SortType
+}
+
+enum SortType {
+  ASC
+  DESC
+}
+
+input FilterTaskInput {
+  """User ID"""
+  userId: String
+
+  """Task Status"""
+  status: TaskStatus!
+}
+
+type Mutation {
+  createTask(createTaskInput: CreateTaskInput!): Task!
+  updateTask(updateTaskInput: UpdateTaskInput!): Task!
+  removeTask(id: String!): Task!
+  createComment(createCommentInput: CreateCommentInput!): Comment!
+  updateComment(updateCommentInput: UpdateCommentInput!): Comment!
+  removeComment(id: String!): Comment!
+  createUser(createUserInput: CreateUserInput!): User!
+  updateUser(updateUserInput: UpdateUserInput!): User!
+  removeUser(id: String!): User!
+  login(createLoginInput: CreateLoginInput!): LoginResponse!
+}
+
+input CreateTaskInput {
+  """Task Parent"""
+  parentId: String
+
+  """Task Name"""
+  name: String!
+
+  """Task Status"""
+  status: TaskStatus!
+}
+
+input UpdateTaskInput {
+  """Task Parent"""
+  parentId: String
+
+  """Task Name"""
+  name: String
+
+  """Task Status"""
+  status: TaskStatus
+  id: String!
+}
+
+input CreateCommentInput {
+  """Task ID"""
+  taskId: String!
+
+  """Comment Parent ID"""
+  parentId: String
+
+  """Comment Text"""
+  text: String!
+}
+
+input UpdateCommentInput {
+  """Task ID"""
+  taskId: String
+
+  """Comment Parent ID"""
+  parentId: String
+
+  """Comment Text"""
+  text: String
+  id: String!
+}
+
+input CreateUserInput {
+  """User Name"""
+  username: String!
+
+  """User Email"""
+  email: String!
+
+  """User Password"""
+  password: String!
+}
+
+input UpdateUserInput {
+  """User Name"""
+  username: String
+
+  """User Email"""
+  email: String
+
+  """User Password"""
+  password: String
+  id: String!
+}
+
+input CreateLoginInput {
+  """Login User Name"""
+  username: String!
+
+  """Login User Password"""
+  password: String!
+}
